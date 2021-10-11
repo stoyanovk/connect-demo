@@ -1,0 +1,12 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.d-flex {
+  display: flex;
+}
+.d-flex > div {
+  flex-grow: 1;
+  border: 2px solid #000000;
+  margin: 2px;
+}
