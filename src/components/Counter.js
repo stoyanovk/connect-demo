@@ -1,12 +1,13 @@
-import { useAppContext } from "../hooks";
+import { connect } from "../hooks";
 
-export function Counter() {
-  const { count } = useAppContext();
+function Counter({ count, dispatch }) {
   console.log("render Counter");
   return (
     <div>
       <h3>Counter Value</h3>
       <p>{count}</p>
+      <button onClick={() => dispatch({ type: "inceCount" })}>inc</button>
     </div>
   );
 }
+export default connect((state) => ({ count: state.count }))(Counter);

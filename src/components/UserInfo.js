@@ -1,17 +1,15 @@
-import { useAppContext } from "../hooks";
+import { connect } from "../hooks";
 
-export function UserInfo() {
-  const { userInfo } = useAppContext();
+function UserInfo({ user }) {
   console.log("render UserInfo");
-
-  if (!userInfo) {
+  if (!user) {
     return (
       <div>
         <h3>Select user</h3>
       </div>
     );
   }
-  const { name, email } = userInfo;
+  const { name, email } = user;
   return (
     <div>
       <h3>{name}</h3>
@@ -19,3 +17,6 @@ export function UserInfo() {
     </div>
   );
 }
+
+const stateToProps = (state) => ({ user: state.user });
+export default connect(stateToProps)(UserInfo);

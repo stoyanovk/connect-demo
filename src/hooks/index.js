@@ -1,4 +1,4 @@
-import { useReducer, createContext, useContext } from "react";
+import { useReducer, createContext, useContext, useMemo } from "react";
 const initialState = {
   count: 0,
   usersList: [],
@@ -12,7 +12,7 @@ const actions = {
     return { ...state, usersList: action.payload.usersList };
   },
   setUser(state, action) {
-    const selectedUser = state.userLists.find(
+    const selectedUser = state.usersList.find(
       (user) => user.id === action.payload.id
     );
     return { ...state, user: selectedUser };
@@ -35,3 +35,20 @@ export const AppState = ({ children }) => {
 };
 
 export const useAppContext = () => useContext(Context);
+
+export function connect(mapStateToProps) {
+  return function (WrappedComponent) {
+    return function () {
+      const { dispatch, ...store } = useAppContext();
+      const getStoreValue = () => {
+        return mapStateToProps ? mapStateToProps(store) : store;
+      };
+      const state = getStoreValue();
+      return useMemo(() => {
+        return (
+          <WrappedComponent {...this.props} {...state} dispatch={dispatch} />
+        );
+      }, [JSON.stringify(state)]);
+    };
+  };
+}
